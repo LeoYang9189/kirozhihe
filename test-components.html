@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Component Test</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div id="app">
+        <h1 class="text-3xl font-bold mb-8">Component Tests</h1>
+        
+        <!-- AnimatedCounter Test -->
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+            <h2 class="text-xl font-semibold mb-4">AnimatedCounter Component</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center">
+                    <animated-counter :target="150" suffix="万吨" :duration="2000"></animated-counter>
+                    <p class="text-sm text-gray-600 mt-2">累计运输货量</p>
+                </div>
+                <div class="text-center">
+                    <animated-counter :target="25" suffix="个" :duration="2000" :delay="500"></animated-counter>
+                    <p class="text-sm text-gray-600 mt-2">覆盖国家</p>
+                </div>
+                <div class="text-center">
+                    <animated-counter :target="99.5" suffix="%" :duration="2000" :delay="1000" :decimals="1"></animated-counter>
+                    <p class="text-sm text-gray-600 mt-2">客户满意度</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- IconCard Test -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">IconCard Component</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <icon-card
+                    icon="shield"
+                    title="NOVCC合规资质"
+                    description="拥有NOVCC专业资质认证，确保合规运营，为客户提供可靠保障"
+                    variant="advantage"
+                    :clickable="true"
+                    @click="handleCardClick('qualification')"
+                ></icon-card>
+                
+                <icon-card
+                    icon="globe"
+                    title="全球箱源网络"
+                    description="建立了覆盖全球的集装箱资源网络，确保舱位供应稳定可靠"
+                    variant="advantage"
+                    :clickable="true"
+                    @click="handleCardClick('network')"
+                ></icon-card>
+                
+                <icon-card
+                    icon="users"
+                    title="全客户类型服务经验"
+                    description="服务各类型客户，从大型企业到中小贸易商，积累了丰富的服务经验"
+                    variant="advantage"
+                    :clickable="true"
+                    @click="handleCardClick('experience')"
+                ></icon-card>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        // AnimatedCounter Component
+        const AnimatedCounter = {
+            template: `<span class="animated-counter text-2xl font-bold text-blue-600">{{ displayValue }}{{ suffix }}</span>`,
+            props: {
+                target: { type: Number, required: true },
+                suffix: { type: String, default: '' },
+                duration: { type: Number, default: 2000 },
+                delay: { type: Number, default: 0 },
+                decimals: { type: Number, default: 0 },
+                triggerOnVisible: { type: Boolean, default: true },
+                threshold: { type: Number, default: 0.3 }
+            },
+            data() {
+                return {
+                    displayValue: 0,
+                    animationId: null,
+                    observer: null,
+                    hasAnimated: false
+                }
+            },
+            mounted() {
+                if (this.triggerOnVisible) {
+                    this.setupIntersectionObserver()
+                } else {
+                    setTimeout(() => {
+                        this.startAnimation()
+                    }, this.delay)
+                }
+            },
+            beforeUnmount() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId)
+                }
+                if (this.observer) {
+                    this.observer.disconnect()
+                }
+            },
+            methods: {
+                setupIntersectionObserver() {
+                    this.observer = new IntersectionObserver(
+                        (entries) => {
+                            entries.forEach((entry) => {
+                                if (entry.isIntersecting && !this.hasAnimated) {
+                                    this.hasAnimated = true
+                                    setTimeout(() => {
+                                        this.startAnimation()
+                                    }, this.delay)
+                                }
+                            })
+                        },
+                        {
+                            threshold: this.threshold,
+                            rootMargin: '0px 0px -50px 0px'
+                        }
+                    )
+
+                    if (this.$el) {
+                        this.observer.observe(this.$el)
+                    }
+                },
+                startAnimation() {
+                    const startTime = Date.now()
+                    const startValue = 0
+                    const endValue = this.target
+                    const duration = this.duration
+
+                    const animate = () => {
+                        const currentTime = Date.now()
+                        const elapsed = currentTime - startTime
+                        const progress = Math.min(elapsed / duration, 1)
+
+                        const easeProgress = 1 - Math.pow(1 - progress, 3)
+                        const currentValue = startValue + (endValue - startValue) * easeProgress
+                        
+                        if (this.decimals > 0) {
+                            this.displayValue = parseFloat(currentValue.toFixed(this.decimals))
+                        } else {
+                            this.displayValue = Math.floor(currentValue)
+                        }
+
+                        if (progress < 1) {
+                            this.animationId = requestAnimationFrame(animate)
+                        } else {
+                            this.displayValue = this.decimals > 0 ? 
+                                parseFloat(this.target.toFixed(this.decimals)) : 
+                                this.target
+                        }
+                    }
+
+                    this.animationId = requestAnimationFrame(animate)
+                }
+            }
+        }
+
+        // IconCard Component
+        const IconCard = {
+            template: `
+                <div 
+                    class="icon-card group flex flex-col items-center text-center bg-white p-6 border border-gray-200 rounded-lg transition-all duration-300 ease-in-out hover:shadow-lg hover:border-blue-300 min-h-[250px]"
+                    :class="{ 'cursor-pointer': clickable }"
+                    @click="handleClick"
+                >
+                    <div class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-100 group-hover:bg-blue-200 transition-colors duration-300">
+                        <svg class="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path v-if="icon === 'shield'" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            <path v-else-if="icon === 'globe'" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                            <path v-else-if="icon === 'users'" d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A3.01 3.01 0 0 0 16.98 7c-.8 0-1.54.37-2.01.97L12.5 11.5 9.98 7.97A3.01 3.01 0 0 0 7 7c-.8 0-1.54.37-2.01.97L2.46 15.5H5v6.5h2V16h1.5l1.75-5.25L12.5 16H14v6h2zm-11.5-2.5H7V16H5.5v3.5zm6-6L12.5 9 15 13.5h-2.5z"/>
+                            <path v-else d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 flex flex-col justify-center">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors duration-300">
+                            {{ title }}
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
+                            {{ description }}
+                        </p>
+                    </div>
+                </div>
+            `,
+            props: {
+                icon: { type: String, default: null },
+                title: { type: String, required: true },
+                description: { type: String, default: null },
+                variant: { type: String, default: 'default' },
+                clickable: { type: Boolean, default: false }
+            },
+            emits: ['click'],
+            methods: {
+                handleClick(event) {
+                    if (this.clickable) {
+                        this.$emit('click', event)
+                    }
+                }
+            }
+        }
+
+        createApp({
+            components: {
+                AnimatedCounter,
+                IconCard
+            },
+            methods: {
+                handleCardClick(cardType) {
+                    alert(`Clicked on ${cardType} card!`)
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

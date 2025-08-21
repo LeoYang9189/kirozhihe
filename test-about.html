@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Page Test</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="pt-16 bg-gray-50">
+            <!-- 页面标题 -->
+            <div class="bg-white">
+                <div class="container mx-auto px-4 py-16">
+                    <div class="text-center">
+                        <h1 class="text-4xl font-bold text-gray-900 mb-4">公司介绍</h1>
+                        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                            智和明远成立于2022年，拥有NOVCC资质，专注于"一带一路"沿线国际物流服务。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 公司成立背景和资质 -->
+            <section class="py-16">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-6xl mx-auto">
+                        <div class="grid md:grid-cols-2 gap-12 items-center">
+                            <!-- 公司背景 -->
+                            <div class="space-y-6">
+                                <h2 class="text-3xl font-bold text-gray-900">公司背景</h2>
+                                <div class="space-y-4">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <span class="text-lg font-semibold text-gray-800">
+                                            重庆智和明远国际物流责任有限公司
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <span class="text-gray-600">成立于2022年</span>
+                                    </div>
+                                    <p class="text-gray-700 leading-relaxed">
+                                        公司由近10年国际铁路运输经验的第一批中欧班列市场化人员创立，致力于为客户提供专业、高效的跨境物流解决方案。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 资质认证 -->
+                            <div class="bg-white rounded-lg shadow-lg p-8">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-6">资质认证</h3>
+                                <div class="space-y-4">
+                                    <div class="border-l-4 border-blue-500 pl-4 py-2">
+                                        <h4 class="font-semibold text-gray-900">NOVCC资质</h4>
+                                        <p class="text-gray-600 text-sm">国际铁路运输代理资质</p>
+                                        <p class="text-gray-500 text-xs">颁发机构：中国对外承包工程商会</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 业务范围和客户群体 -->
+            <section class="py-16 bg-white">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-6xl mx-auto">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold text-gray-900 mb-4">业务范围与客户群体</h2>
+                            <p class="text-gray-600 max-w-2xl mx-auto">
+                                我们为不同类型的客户提供全方位的国际物流服务解决方案
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-12">
+                            <!-- 业务范围 -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                                    <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                    核心业务范围
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <span class="text-gray-800">国际铁路运输代理</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <span class="text-gray-800">集装箱租赁买卖</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-blue-50 transition-colors">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                        <span class="text-gray-800">跨境公路运输</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 客户群体 -->
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                                    <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    服务客户群体
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        <span class="text-gray-800">制造企业</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        <span class="text-gray-800">贸易公司</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-green-50 transition-colors">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                        <span class="text-gray-800">跨境电商</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+        createApp({}).mount('#app')
+    </script>
+</body>
+</html>
